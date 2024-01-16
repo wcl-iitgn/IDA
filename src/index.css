@@ -41,6 +41,7 @@ p {
 }
 .para_content h1{
   font-size: 36px;
+  margin-bottom: 20px;
 }
 
 
@@ -176,6 +177,9 @@ p {
   transition: ease-in 0.5s;
   /* background-color: whitesmoke; */
 
+  background-color: var(--theme-hover-clor);
+}
+.active_nav{
   background-color: var(--theme-hover-clor);
 }
 
@@ -708,10 +712,52 @@ margin-top: 30px;
   font-size: 20px;
   color: white;
   justify-content: right;
+  border-radius: 5px;
 
 }
 
 .card_btn button:hover{
   background-color: var(--theme-hover-clor);
   transition: ease-in 0.2s;
+}
+
+
+
+
+
+/* ********************* */
+/* Contact Page */
+/* ********************* */
+.contact-image {
+  margin-bottom: 20px;
+  padding: 10px;
+
+
+
+}
+
+.contact-image img {
+  width: 100%;
+  max-width: 500px;
+  padding: 2px;
+  border: 1px solid black;
+
+
+
+}
+
+.contact-image-caption p {
+  font-size: 16px;
+  padding: 10px;
+}
+
+.contact-image-caption a {
+  font-size: 20px;
+  color: black;
+  /* font-family: "Open sans", Helvetica, Arial; */
+  font-weight: 600;
+
+}
+.contact-image-caption a:hover {
+  color: blue;
 }

@@ -2526,9 +2526,9 @@
       "ID": 421
     },
     {
-      "DISTRICT": "Disputed (West Bengal)",
-      "STATE": "Disputed (West Bengal)",
-      "TEHSIL": "Disputed (West Bengal)",
+      "DISTRICT": "NA",
+      "STATE": "WEST BENGAL",
+      "TEHSIL": "NA",
       "ID": 422
     },
     {
@@ -11442,9 +11442,9 @@
       "ID": 1907
     },
     {
-      "DISTRICT": "Disputed",
+      "DISTRICT": "NA",
       "STATE": "RAJASTHAN",
-      "TEHSIL": "Disputed",
+      "TEHSIL": "NA",
       "ID": 1908
     },
     {
@@ -13814,7 +13814,7 @@
     {
       "DISTRICT": "SAHIBGANJ",
       "STATE": "JHARKHAND",
-      "TEHSIL": "Disputed (Jharkhand)",
+      "TEHSIL": "NA",
       "ID": 2303
     },
     {
@@ -15913,7 +15913,7 @@
     },
     {
       "DISTRICT": "ALIRAJPUR",
-      "STATE": "MADHYA PRADESH(DISPUTED)",
+      "STATE": "MADHYA PRADESH",
       "TEHSIL": "ALIRAJPUR",
       "ID": 2653
     },
@@ -15985,7 +15985,7 @@
     },
     {
       "DISTRICT": "RATLAM",
-      "STATE": "MADHYA PRADESH(DISPUTED)",
+      "STATE": "MADHYA PRADESH",
       "TEHSIL": "BAJNA",
       "ID": 2665
     },
@@ -16332,15 +16332,15 @@
       "ID": 2722
     },
     {
-      "DISTRICT": "DISPUTED",
+      "DISTRICT": "NA",
       "STATE": "MADHYA PRADESH",
-      "TEHSIL": "DISPUTED",
+      "TEHSIL": "NA",
       "ID": 2723
     },
     {
-      "DISTRICT": "DISPUTED",
-      "STATE": "MADHYA PRADESH(DISPUTED)",
-      "TEHSIL": "DISPUTED",
+      "DISTRICT": "NA",
+      "STATE": "MADHYA PRADESH",
+      "TEHSIL": "NA",
       "ID": 2724
     },
     {
@@ -16879,7 +16879,7 @@
     },
     {
       "DISTRICT": "MANDSAUR",
-      "STATE": "MADHYA PRADESH(DISPUTED)",
+      "STATE": "MADHYA PRADESH",
       "TEHSIL": "MANDSAUR",
       "ID": 2814
     },
@@ -17443,7 +17443,7 @@
     },
     {
       "DISTRICT": "MANDSAUR",
-      "STATE": "MADHYA PRADESH(DISPUTED)",
+      "STATE": "MADHYA PRADESH",
       "TEHSIL": "SUWASRA",
       "ID": 2908
     },
@@ -18990,9 +18990,9 @@
       "ID": 3165
     },
     {
-      "DISTRICT": "DISPUTED",
-      "STATE": "DISPUTED",
-      "TEHSIL": "DISPUTED",
+      "DISTRICT": "NA",
+      "STATE": "MAHARASHTRA",
+      "TEHSIL": "NA",
       "ID": 3166
     },
     {
@@ -22106,13 +22106,13 @@
     {
       "DISTRICT": "ARAVALLI",
       "STATE": "GUJARAT",
-      "TEHSIL": "Disputed",
+      "TEHSIL": "NA",
       "ID": 3685
     },
     {
-      "DISTRICT": "DISPUTED",
+      "DISTRICT": "NA",
       "STATE": "GUJARAT",
-      "TEHSIL": "DISPUTED",
+      "TEHSIL": "NA",
       "ID": 3686
     },
     {

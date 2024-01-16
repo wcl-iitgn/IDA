@@ -44,7 +44,7 @@ const Home = () => {
               </div>
 
               <div className="card_btn">
-                <Link to="/timeseries"> <button>Timeseries</button></Link>
+                <Link to="/timeseries"> <button>Time Series</button></Link>
               </div>
             </div>
           </div>

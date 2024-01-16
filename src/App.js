@@ -7,6 +7,7 @@ import ScrollToTop from './components/ScrollToTop'
 import Preloader from './components/Preloader'
 import { AlertProvider } from './context/AlertContext'
 import AlertMessage from './components/AlertMessage'
+import ContactUsPage from './pages/ContactUsPage'
 
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='/map-viewer' element={<Dashboard/>}/>
         <Route path='/about' element={<AboutPage/>}/>
         <Route path='/timeseries' element={<TimeseriesPage/>}/>
+        <Route path='/contact' element={<ContactUsPage/>}/>
         
       </Routes>
 

@@ -20,7 +20,6 @@ const TimeseriesPage = () => {
     const [tehsilSelectedItem, setTehsilSelectedItem] = useState([]);
 
     const [selectedData, setSelectedData] = useState(null);
-
     const [droughtArea, setDroughtArea] = useState(null);
     const [droughtIntensity, setDroughtIntensity] = useState(null);
 
@@ -42,10 +41,10 @@ const TimeseriesPage = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const droughtAreaResponse = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/Area.json`);
+                const droughtAreaResponse = await fetch(`https://india-drought-monitor.github.io/india-drought-atlas-data/Area.json`);
                 const droughtArea = await droughtAreaResponse.json();
 
-                const droughtIntensityResponse = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/Intensity.json`);
+                const droughtIntensityResponse = await fetch(`https://india-drought-monitor.github.io/india-drought-atlas-data/Intensity.json`);
                 const droughtIntensity = await droughtIntensityResponse.json();
 
                 setDroughtArea(droughtArea);
@@ -66,7 +65,8 @@ const TimeseriesPage = () => {
                 try {
                     setLoading(true);
                     // Fetching data from the API
-                    const response = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/${selectedSession}.json`);
+                    const formattedSession = selectedSession.replace(/\s+/g, '_');
+                    const response = await fetch(`https://india-drought-monitor.github.io/india-drought-atlas-data/${formattedSession}.json`);
                     const droughtData = await response.json();
 
                     const filteredDroughtData = droughtData.filter(data => data.ID === tehsilSelectedItem[0].ID.toString());
@@ -142,7 +142,7 @@ const TimeseriesPage = () => {
                             renderOption={(props, state) => (
                                 <Box component="li" {...props} key={state}
                                     sx={{
-                                        fontSize: "12px",
+                                        fontSize: "14px",
                                     }}>
                                     {state}
                                 </Box>
@@ -265,10 +265,10 @@ const TimeseriesPage = () => {
                             onChange={handleSessionChange}
                             id="session"
                             options={[
-                                "Summer_Monsoon",
-                                "Winter_Monsoon",
-                                "Calendar_Year",
-                                "Water_Year",
+                                "Summer Monsoon",
+                                "Winter Monsoon",
+                                "Calendar Year",
+                                "Water Year",
                             ]}
                             renderInput={(params) => (
                                 <TextField {...params} className="form-select mb-3" label="Select Season" />
@@ -307,6 +307,8 @@ const TimeseriesPage = () => {
 
 
                     {plotData && plotData.length > 0 && selectedSession && (
+                        <>
+                        {/* <p>{tehsilSelectedItem[0].STATE}, {tehsilSelectedItem[0].DISTRICT}, {tehsilSelectedItem[0].TEHSIL}</p> */}
                         <Plot
                             data={[
                                 {
@@ -319,7 +321,7 @@ const TimeseriesPage = () => {
                                 },
                             ]}
                             layout={{
-                                title: `Season / Month: ${selectedSession}`,
+                                title: `<b>Season/Month: </b>${selectedSession}, <b>Region: </b>${tehsilSelectedItem[0].TEHSIL}, ${tehsilSelectedItem[0].DISTRICT}, ${tehsilSelectedItem[0].STATE} `,
                                 xaxis: {
                                     title: 'Year',
                                 },
@@ -329,6 +331,7 @@ const TimeseriesPage = () => {
                             }}
                             style={{ width: "100%", height: "100%" }}
                         />
+                        </>
 
                     )}
 

@@ -1,9 +1,11 @@
 import React from 'react'
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
-import { AiFillPrinter } from 'react-icons/ai';
 import { useAlertContext } from '../context/AlertContext';
 import Logo from "../assets/images/export-logo.jpg"
+import MapLegend from "../assets/images/map-legend.jpg"
+
+
 
 const ExportTimeSeries = ({ mapContainerRef }) => {
     const { setAlertMessage, setShowAlert } = useAlertContext();
@@ -49,6 +51,13 @@ const ExportTimeSeries = ({ mapContainerRef }) => {
                         const logoY = 6; // Adjust the Y-coordinate for the logo placement
                         pdf.addImage(logo, 'PNG', logoX, logoY, logoWidth, logoHeight);
 
+                        // Original Width: 900, height 200
+                        const legendWidth = 200; // Adjust the width of the legend as needed
+                        const legendHeight = 44.444; // Adjust the height of the legend as needed
+                        const legendX = pdf.internal.pageSize.getWidth() - legendWidth - 10; // Adjust the X-coordinate for the legend placement
+                        const legendY = 10; // Adjust the Y-coordinate for the legend placement
+                        pdf.addImage(MapLegend, 'JPEG', legendX, legendY, legendWidth, legendHeight);
+
 
                         // Add title at the top
                         // const title = mapTitle;
@@ -87,10 +96,10 @@ const ExportTimeSeries = ({ mapContainerRef }) => {
 
                         const pdfOptions = {
                             compress: true, // Enable compression
-                            quality: 0.4, // Adjust the quality (0.0 - 1.0, default is 0.9)
+                            quality: 0.3, // Adjust the quality (0.0 - 1.0, default is 0.9)
                         };
 
-                        pdf.save('map.pdf', pdfOptions);
+                        pdf.save('timeseries.pdf', pdfOptions);
 
                         setAlertMessage('Map exported as PDF successfully!')
                         setShowAlert(true)

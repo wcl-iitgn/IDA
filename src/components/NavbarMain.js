@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Logo from "../assets/images/logo-2.jpg"
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { FaExternalLinkAlt } from "react-icons/fa";
-
-
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const NavbarMain = () => {
 
@@ -54,17 +52,23 @@ const NavbarMain = () => {
                             </div> */}
 
                             <div className='nav__list'>
-                                <Link className="nav__item" to="/" onClick={handleLinkClick}>
+                                <NavLink className="nav__item" 
+                                activeClassName="active_nav"
+                                 to="/" onClick={handleLinkClick}>
                                     Home
-                                </Link>
+                                </NavLink>
 
-                                <Link className="nav__item" to="/map-viewer" onClick={handleLinkClick}>
+                                <NavLink className="nav__item"
+                                 activeClassName="active_nav"
+                                  to="/map-viewer" onClick={handleLinkClick}>
                                     Map Viewer
-                                </Link>
+                                </NavLink>
 
-                                <Link className="nav__item" to="/timeseries" onClick={handleLinkClick}>
+                                <NavLink className="nav__item"
+                                 activeClassName="active_nav"
+                                  to="/timeseries" onClick={handleLinkClick}>
                                    Time Series
-                                </Link>
+                                </NavLink>
 
                                 {/* <div className='dropdown_nav_container'>
                                     <Link className="nav__item dropdown_nav" to="#">
@@ -76,15 +80,25 @@ const NavbarMain = () => {
                                     </div>
                                 </div> */}
 
-                                <Link className="nav__item" to="/about" onClick={handleLinkClick}>
+                                <NavLink 
+                                className="nav__item"
+                                activeClassName="active_nav"
+                                 to="/about" onClick={handleLinkClick}>
                                     About
-                                </Link>
+                                </NavLink>
+                                <NavLink className="nav__item"
+                                 activeClassName="active_nav"
+                                  to="/contact" onClick={handleLinkClick}>
+                                    Contact Us
+                                </NavLink>
 
-                                <a className="nav__item" href="https://indiadroughtmonitor.in/" onClick={handleLinkClick} target='blank'>
+                                <a className="nav__item"
+                                  href="https://indiadroughtmonitor.in/" onClick={handleLinkClick} target='blank'>
                                    India Drought Monitor&nbsp;<FaExternalLinkAlt />
                                 </a>
 
-                                <a className="nav__item" href="https://vmishra.people.iitgn.ac.in/water&climate/" onClick={handleLinkClick} target='blank'>
+                                <a className="nav__item"
+                                  href="https://vmishra.people.iitgn.ac.in/water&climate/" onClick={handleLinkClick} target='blank'>
                                     WCL&nbsp;<FaExternalLinkAlt />
                                 </a>
                             </div>

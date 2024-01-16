@@ -45,7 +45,7 @@ const Dashboard = () => {
     setDistrictList(items);
     setSelectedState(value)
 
- 
+
 
 
     // Filter indiaDistrict features based on the selected state
@@ -63,7 +63,7 @@ const Dashboard = () => {
 
     // mapRef.current.flyToBounds(bounds, { padding: [10, 10] });
 
-    
+
 
   };
 
@@ -140,23 +140,26 @@ const Dashboard = () => {
         try {
           setLoading(true);
 
+          const formattedSession = selectedSession.replace(/\s+/g, '_');
+
           // Fetching data from the API
-          const response = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/${selectedSession}.json`);
+          const response = await fetch(`https://india-drought-monitor.github.io/india-drought-atlas-data/${formattedSession}.json`);
           const droughtData = await response.json();
 
           // Fetching area data from the API
-          const areaResponse = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/Area.json`);
+          const areaResponse = await fetch(`https://india-drought-monitor.github.io/india-drought-atlas-data/Area.json`);
           const droughtArea = await areaResponse.json();
 
           // Fetching intensity data from the API
-          const intensityResponse = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/Intensity.json`);
+          const intensityResponse = await fetch(`https://india-drought-monitor.github.io/india-drought-atlas-data/Intensity.json`);
           const droughtIntensity = await intensityResponse.json();
+      
 
-          const filteredDroughtArea = droughtArea.filter(data => data.Year === parseInt(selectedYear) && data[selectedSession]);
-          const filteredDroughtIntensity = droughtIntensity.filter(data => data.Year === parseInt(selectedYear) && data[selectedSession]);
+          const filteredDroughtArea = droughtArea.filter(data => data.Year === parseInt(selectedYear) && data[formattedSession]);
+          const filteredDroughtIntensity = droughtIntensity.filter(data => data.Year === parseInt(selectedYear) && data[formattedSession]);
 
           if (filteredDroughtArea.length > 0) {
-            const selectedDroughtValue = filteredDroughtArea[0][selectedSession];
+            const selectedDroughtValue = filteredDroughtArea[0][formattedSession];
 
             if (selectedDroughtValue !== undefined) {
               setDroughtArea(selectedDroughtValue);
@@ -168,7 +171,7 @@ const Dashboard = () => {
           }
 
           if (filteredDroughtIntensity.length > 0) {
-            const selectedIntensityValue = filteredDroughtIntensity[0][selectedSession];
+            const selectedIntensityValue = filteredDroughtIntensity[0][formattedSession];
 
             if (selectedIntensityValue !== undefined) {
               setDroughtIntensity(selectedIntensityValue);
@@ -191,7 +194,10 @@ const Dashboard = () => {
   }, [selectedSession, selectedYear]);
 
 
-
+  const maxBounds = L.latLngBounds(
+    L.latLng(4, 60),  // Southwest corner of the bounds
+    L.latLng(45, 110)  // Northeast corner of the bounds
+  );
 
 
   function DistrictOnEachfeature(feature, layer) {
@@ -200,6 +206,7 @@ const Dashboard = () => {
       if (selectedYear && feature.properties && feature.properties.ID) {
         const popupContent = `
           <div>
+            ID: ${feature.properties.ID}<br/>
             DISTRICT: ${feature.properties.DISTRICT}<br/>
             STATE: ${feature.properties.STATE}<br/>
             TEHSIL: ${feature.properties.TEHSIL}<br/>
@@ -231,7 +238,7 @@ const Dashboard = () => {
               ? 'red'
               : density > -3
                 ? 'brown'
-                : 'none';
+                : 'brown';
   })
 
 
@@ -315,10 +322,10 @@ const Dashboard = () => {
               onChange={handleSessionChange}
               id="session"
               options={[
-                "Summer_Monsoon",
-                "Winter_Monsoon",
-                "Calendar_Year",
-                "Water_Year",
+                "Summer Monsoon",
+                "Winter Monsoon",
+                "Calendar Year",
+                "Water Year",
               ]}
               renderInput={(params) => (
                 <TextField {...params} className="form-select mb-3" label="Select Season" />
@@ -341,7 +348,7 @@ const Dashboard = () => {
           </div>
 
           <div className='border border-secondary p-2 mb-2'>
-          <label className="form-label">Filter Data:</label>
+            <label className="form-label">Filter Data:</label>
 
             <Autocomplete
               style={{ marginBottom: "20px" }}
@@ -430,10 +437,11 @@ const Dashboard = () => {
 
           <MapContainer
             fullscreenControl={true}
+
             center={[23, 84]}
             style={{ width: '100%', height: "100%", backgroundColor: 'white', border: 'none', margin: 'auto' }}
             zoom={setInitialMapZoom()}
-
+            maxBounds={maxBounds}
             // maxZoom={8}
             minZoom={setInitialMapZoom()}
             keyboard={false}
@@ -444,9 +452,6 @@ const Dashboard = () => {
           >
             <SearchBar />
             <ExportMapButton mapContainerRef={mapContainerRef} />
-
-
-
 
 
 
@@ -463,12 +468,12 @@ const Dashboard = () => {
 
                 {filteredIndiaDistrict ? (
                   <FiltererdJsonData selectedState={selectedState}
-                  selectedDistrict={selectedDistrict}
-                  selectedTehsil={selectedTehsil}
-                  DistrictStyle={DistrictStyle}
-                  filteredIndiaDistrict={filteredIndiaDistrict}
-                  DistrictOnEachfeature={DistrictOnEachfeature}/>
-                  
+                    selectedDistrict={selectedDistrict}
+                    selectedTehsil={selectedTehsil}
+                    DistrictStyle={DistrictStyle}
+                    filteredIndiaDistrict={filteredIndiaDistrict}
+                    DistrictOnEachfeature={DistrictOnEachfeature} />
+
 
                 ) : (
                   <GeoJSON

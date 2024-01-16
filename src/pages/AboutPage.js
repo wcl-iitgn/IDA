@@ -20,8 +20,8 @@ const AboutPage = () => {
                         If you would like to use any of the data from the Drought Atlas of India, please cite the following source:
 
                         <ul>
-                            <li>Chuphal, D. S., Kushwaha, A. P., Aadhar, S. & Mishra, V. Drought Atlas of India, 1901-2020. Zenodo <a href='https://doi.org/10.5281/zenodo.8280551' target='blank'> https://doi.org/10.5281/zenodo.8280551</a> (2023).</li>
-                            <li>Chuphal, D. S., Kushwaha, A. P., Aadhar, S., & Mishra, V. (2024). Drought Atlas of India, 1901–2020. Scientific Data, 11(1), 7.</li>
+                            <li>Chuphal, D. S., Kushwaha, A. P., Aadhar, S. & Mishra, V. Drought Atlas of India, 1901-2020. Zenodo (2023)  <a href='https://doi.org/10.5281/zenodo.8280551' target='blank'> https://doi.org/10.5281/zenodo.8280551</a> </li>
+                            <li>Chuphal, D. S., Kushwaha, A. P., Aadhar, S., & Mishra, V. (2024). Drought Atlas of India, 1901–2020. Scientific Data, 11(1), 7. <a href='https://doi.org/10.1038/s41597-023-02856-y' target='blank'> https://doi.org/10.1038/s41597-023-02856-y</a></li>
                         </ul>
                     </p>
 
