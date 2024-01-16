@@ -1,6 +1,5 @@
 import React from 'react'
 import WCLLogo from "../assets/images/logo-2.jpg"
-import { Link } from "react-router-dom";
 
 const Footer = () => {
 

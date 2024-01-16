@@ -4,13 +4,32 @@
         height: auto;
         margin-top: 55px;
       }
-      .map_layer_loader_container {
+
+      .dasboard_page_container{
+        height: auto;
+        margin-top: 55px;
+      
+      }
+
+      .map_layer_loader_container_mobile {
+        display: block;
         width: 100%;
         height: calc(100vh -55px);
-        position: absolute;
+        position: fixed;
+        /* background-color: white; */
+        border-radius: 10px;
+        top: 55px;
+        bottom: 0px;
+        z-index: 1000;
+      
       
       
       }
+      .map_layer_loader_container_desktop{
+        display: none;
+      }
+
+
       .main_preloader {
         height: calc(100vh -55px);
         width: 100%;
@@ -26,7 +45,7 @@
       
       .left_panel {
         width: 100vw;
-        padding: 5px;
+        padding: 10px;
         height: auto;
 
       
@@ -43,6 +62,9 @@
         font-size: 24px;
 
 
+    }
+    .leaflet-top, .leaflet-bottom{
+        z-index: 1000000 !important;
     }
 
 
@@ -80,7 +102,7 @@
 
     .main_nav {
         position: fixed;
-        top: 0;
+        top: 55px;
         left: -100%;
         background-color: rgb(255, 255, 255);
         width: 100%;
@@ -90,11 +112,14 @@
         transition: .5s;
         overflow-y: auto;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-top: 2px solid rgb(200, 200, 200);
+        z-index: 10000000000 !important;
     }
 
     .nav__content {
         /* padding: 0px 20px; */
         display: block;
+        z-index: 10000000000 !important;
     }
 
     .show {
@@ -123,7 +148,7 @@
         width: 100%;
         padding: 15px 0px;
         padding: 10px 0px;
-        border-top: 1px solid rgb(223, 223, 223);
+        border-bottom: 1px solid rgb(223, 223, 223);
         /* border-bottom   : 1px solid rgb(223, 223, 223); */
 
     }
@@ -178,7 +203,7 @@ display: none;
       
       .drought_details_container_mobile {
         display: block;
-        padding: 5px;
+        padding: 10px;
         width: 100%;
       
       }
@@ -189,6 +214,45 @@ display: none;
       .zoom_btn{
         display: none;
       }
+
+      .card_item{
+        max-width: 100%;
+      
+      }
+      .card_content{
+        background-color: #c99000;
+        padding: 10px;
+      }
+      .card_content p{
+        font-size: 18px;
+        color: white;
+      }
+
+      .para_content{
+        margin-top: 20px;
+        padding: 10px 10px;
+        margin-bottom: 20px;
+      }
+      .para_content p{
+        font-size: 18px;
+      }
+      .para_content h1{
+        font-size: 28px;
+      }
+      .card_btn{
+        width: 100%;
+        display:block;
+        }
+        
+      .card_btn button{
+width: 100%;
+padding: 15px 15px;
+font-size: 18px;
+      
+      }
+
+
+
 
 
       

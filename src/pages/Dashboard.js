@@ -1,11 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { MapContainer, GeoJSON, Pane } from 'react-leaflet'
+import React, { useEffect, useRef, useState } from 'react'
+import { MapContainer, GeoJSON } from 'react-leaflet'
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css"
+import 'leaflet-fullscreen/dist/Leaflet.fullscreen.js';
+import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
+import { Autocomplete, TextField } from "@mui/material";
 import BaseMap from '../components/BaseMap';
 import SearchBar from '../components/SearchBar';
 import indiaDistrict from '../assets/data/indiaDistrict.json';
 import Legend from '../components/Legend';
+import indiastates from '../assets/data/indiaStates.json';
+import PlaceAttributes from "../assets/data/PlaceAttributes.json";
+import { Box } from "@mui/system";
+import FiltererdJsonData from './FiltererdJsonData';
+import ExportMapButton from './ExportMapButton';
+
 
 
 const Dashboard = () => {
@@ -15,15 +24,88 @@ const Dashboard = () => {
   const [droughtArea, setDroughtArea] = useState(null);
   const [droughtIntensity, setDroughtIntensity] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [districtList, setDistrictList] = useState([]);
+  const [filteredIndiaDistrict, setFilteredIndiaDistrict] = useState(null);
+  const [tehsilList, setTehsilList] = useState([]);
+  const [selectedState, setSelectedState] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [selectedTehsil, setSelectedTehsil] = useState([]);
+
+  const mapContainerRef = useRef(null);
 
 
 
-  const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
+
+
+  const handleStateSelect = (event, value) => {
+    let items = PlaceAttributes.filter((item) => item.STATE === value);
+    items = [...new Set(items.map((item) => item))];
+    items.sort();
+
+    setDistrictList(items);
+    setSelectedState(value)
+
+ 
+
+
+    // Filter indiaDistrict features based on the selected state
+    let filteredStateFeatures = indiaDistrict.features.filter((feature) => feature.properties.STATE === value);
+
+    // const bounds = filteredStateFeatures.reduce((acc, feature) => {
+    //   const coordinates = feature.geometry.coordinates[0];
+    //   return acc.extend(coordinates);
+    // }, new L.LatLngBounds());
+
+    setFilteredIndiaDistrict({
+      type: "FeatureCollection",
+      features: filteredStateFeatures,
+    });
+
+    // mapRef.current.flyToBounds(bounds, { padding: [10, 10] });
+
+    
+
   };
 
-  const handleSessionChange = (event) => {
-    setSelectedSession(event.target.value);
+
+
+
+
+  const handleDistrictSelect = (event, value) => {
+    let items = districtList.filter((item) => item.DISTRICT === value);
+    items = [...new Set(items.map((item) => item))];
+    items.sort();
+
+    setTehsilList(items);
+    setSelectedDistrict(value)
+
+    let filteredDistrictFeatures = indiaDistrict.features.filter((feature) => feature.properties.DISTRICT === value && feature.properties.STATE === selectedState);
+
+    setFilteredIndiaDistrict({
+      type: "FeatureCollection",
+      features: filteredDistrictFeatures,
+    });
+
+  };
+
+  const handleTehsilSelect = (event, value) => {
+    setSelectedTehsil(value)
+
+    let filteredTehsilFeatures = indiaDistrict.features.filter((feature) => feature.properties.TEHSIL === value && feature.properties.DISTRICT === selectedDistrict && feature.properties.STATE === selectedState);
+    setFilteredIndiaDistrict({
+      type: "FeatureCollection",
+      features: filteredTehsilFeatures,
+    });
+  };
+
+
+  const handleYearChange = (event, value) => {
+    setSelectedYear(value);
+  };
+
+
+  const handleSessionChange = (event, value) => {
+    setSelectedSession(value);
   };
 
 
@@ -40,30 +122,42 @@ const Dashboard = () => {
     return mapZoom;
   }
 
+  const setDragging = () => {
+    var viewportWidth = window.innerWidth;
+    var dragging;
+    if (viewportWidth <= [767]) {
+      dragging = false;
+    } if (viewportWidth >= [768]) {
+      dragging = true;
+    }
+    return dragging;
+  }
+
+
   useEffect(() => {
     if (selectedSession && selectedYear) {
       const fetchData = async () => {
         try {
           setLoading(true);
-  
+
           // Fetching data from the API
           const response = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/${selectedSession}.json`);
           const droughtData = await response.json();
-  
+
           // Fetching area data from the API
           const areaResponse = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/Area.json`);
           const droughtArea = await areaResponse.json();
-  
+
           // Fetching intensity data from the API
           const intensityResponse = await fetch(`https://aman1chaudhary.github.io/india-drought-atlas-data/Intensity.json`);
           const droughtIntensity = await intensityResponse.json();
-  
+
           const filteredDroughtArea = droughtArea.filter(data => data.Year === parseInt(selectedYear) && data[selectedSession]);
           const filteredDroughtIntensity = droughtIntensity.filter(data => data.Year === parseInt(selectedYear) && data[selectedSession]);
-  
+
           if (filteredDroughtArea.length > 0) {
             const selectedDroughtValue = filteredDroughtArea[0][selectedSession];
-  
+
             if (selectedDroughtValue !== undefined) {
               setDroughtArea(selectedDroughtValue);
             } else {
@@ -72,10 +166,10 @@ const Dashboard = () => {
           } else {
             setDroughtArea(null);
           }
-  
+
           if (filteredDroughtIntensity.length > 0) {
             const selectedIntensityValue = filteredDroughtIntensity[0][selectedSession];
-  
+
             if (selectedIntensityValue !== undefined) {
               setDroughtIntensity(selectedIntensityValue);
             } else {
@@ -84,10 +178,10 @@ const Dashboard = () => {
           } else {
             setDroughtIntensity(null);
           }
-  
+
           setSelectedData(droughtData);
           setLoading(false);
-  
+
         } catch (error) {
           console.error("Error fetching and filtering wind data:", error);
         }
@@ -95,7 +189,7 @@ const Dashboard = () => {
       fetchData();
     }
   }, [selectedSession, selectedYear]);
-  
+
 
 
 
@@ -106,10 +200,10 @@ const Dashboard = () => {
       if (selectedYear && feature.properties && feature.properties.ID) {
         const popupContent = `
           <div>
-            DISTRICT: ${feature.properties.District}<br/>
+            DISTRICT: ${feature.properties.DISTRICT}<br/>
             STATE: ${feature.properties.STATE}<br/>
             TEHSIL: ${feature.properties.TEHSIL}<br/>
-            VALUE: ${summerDataItem ? summerDataItem[`Y${selectedYear}`] : null}
+            VALUE: ${summerDataItem ? summerDataItem[selectedYear] : null}
           </div>
         `;
         layer.bindTooltip(popupContent, { sticky: true });
@@ -147,7 +241,7 @@ const Dashboard = () => {
     if (selectedYear) {
       const getDensityFromSummerData = (id) => {
         const summerDataItem = selectedData.find(item => item.ID === id.toString());
-        return summerDataItem ? summerDataItem[`Y${selectedYear}`] : null;
+        return summerDataItem ? summerDataItem[selectedYear] : null;
 
       };
 
@@ -188,63 +282,131 @@ const Dashboard = () => {
 
       <div className='main_dashboard'>
         <div className='left_panel'>
-        <div className='border border-secondary p-2 mb-2'>
-            <label className="form-label">Select Year</label>
-            <select
-              className="form-select"
-              aria-label="Default select example"
-              value={selectedYear}
-              onChange={handleYearChange}
-            >
-              <option value="none">Select</option>
-              {Array.from({ length: 2021 - 1900 }, (_, index) => (
-                <option key={`${1901 + index}`} value={`${1901 + index}`}>
-                  {1901 + index}
-                </option>
-              ))}
-            </select>
+
+          <div className='border border-secondary p-2 mb-2'>
+            <Autocomplete
+              onChange={(event, value) => handleYearChange(event, value)}
+              id="year"
+              options={Array.from({ length: 2020 - 1900 }, (_, index) => `${1901 + index}`)}
+              noOptionsText="No Available Data"
+              renderOption={(props, year) => (
+                <Box component="li" {...props} key={year}
+                  sx={{
+                    fontSize: "14px",
+                  }}>
+                  {year}
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Year"
+                  className="form-select"
+                  aria-label="Default select example"
+                  value={selectedYear}
+                />
+              )}
+            />
+
           </div>
 
           <div className='border border-secondary p-2 mb-2'>
-            <label className="form-label">Select Session</label>
-            <select
-              className="form-select mb-3"
-              value={selectedSession}
+            <Autocomplete
               onChange={handleSessionChange}
-              aria-label="Default select example">
-              <option defaultValue="none">Select</option>
-              <option value="Summer_Monsoon">Summer Monsoon</option>
-              <option value="Winter_Monsoon">Winter Monsoon</option>
-              <option value="Calendar_Year">Calendar year</option>
-              <option value="Water_Year">Water year</option>
-            </select>
+              id="session"
+              options={[
+                "Summer_Monsoon",
+                "Winter_Monsoon",
+                "Calendar_Year",
+                "Water_Year",
+              ]}
+              renderInput={(params) => (
+                <TextField {...params} className="form-select mb-3" label="Select Season" />
+              )}
+            />
 
-            <label className="form-label">Or</label><br />
-            <label className="form-label">Select Month</label>
-            <select
-              className="form-select mb-3"
-              value={selectedSession}
+            <label className="form-label">or</label><br />
+
+            <Autocomplete
               onChange={handleSessionChange}
-              aria-label="Default select example">
-              <option defaultValue="none">Select</option>
-              <option value="January">January</option>
-              <option value="February">February</option>
-              <option value="March">March</option>
-              <option value="April">April</option>
-              <option value="May">May</option>
-              <option value="June">June</option>
-              <option value="July">July</option>
-              <option value="August">August</option>
-              <option value="September">September</option>
-              <option value="October">October</option>
-              <option value="November">November</option>
-              <option value="December">December</option>
+              id="month"
+              options={[
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December",
+              ]}
+              renderInput={(params) => (
+                <TextField {...params} className="form-select mb-3" label="Select Month" />
+              )}
+            />
+          </div>
 
-            </select>
+          <div className='border border-secondary p-2 mb-2'>
+          <label className="form-label">Filter Data:</label>
+
+            <Autocomplete
+              style={{ marginBottom: "20px" }}
+              onChange={(event, value) => handleStateSelect(event, value)}
+              id="state"
+              getOptionLabel={(state) => `${state}`}
+              options={[...new Set(PlaceAttributes.map((item) => item.STATE))]}
+              isOptionEqualToValue={(option, value) => option.Name === value.Name}
+              noOptionsText={"No Available Data"}
+              // disabled={!selectedData}
+              renderOption={(props, state) => (
+                <Box component="li" {...props} key={state}
+                  sx={{
+                    fontSize: "14px",
+                  }}>
+                  {state}
+                </Box>
+              )}
+              renderInput={(params) => <TextField {...params} label="Search State" />}
+            />
+
+            <Autocomplete
+              style={{ marginBottom: "20px" }}
+              onChange={(event, value) => handleDistrictSelect(event, value)}
+              id="district"
+              getOptionLabel={(district) => `${district}`}
+              options={[...new Set(districtList.map((item) => item.DISTRICT))]}
+              isOptionEqualToValue={(option, value) => option.Name === value.Name}
+              noOptionsText={"No Available Data"}
+              disabled={districtList.length === 0}
+              renderOption={(props, district) => (
+                <Box component="li" {...props} key={district}
+                  sx={{
+                    fontSize: "14px",
+                  }}>
+                  {district}
+                </Box>
+              )}
+              renderInput={(params) => <TextField {...params}
+
+                label="Search District" />}
+            />
+
+            <Autocomplete
+              onChange={(event, value) => handleTehsilSelect(event, value)}
+              id="tehsil"
+              disabled={tehsilList.length === 0}
+              getOptionLabel={(tehsil) => `${tehsil}`}
+              options={[...new Set(tehsilList.map((item) => item.TEHSIL))]}
+              isOptionEqualToValue={(option, value) => option.Name === value.Name}
+              noOptionsText={"No Available Data"}
+              renderOption={(props, tehsil) => (
+                <Box component="li" {...props} key={tehsil}
+                  sx={{
+                    fontSize: "14px",
+                  }}>
+                  {tehsil}
+                </Box>
+              )}
+              renderInput={(params) => <TextField {...params} label="Search Tehsil" />}
+            />
 
           </div>
 
-          
+
 
         </div>
 
@@ -254,9 +416,9 @@ const Dashboard = () => {
             <div className='drought_details_container_mobile'>
               <div className='border border-secondary p-2'>
                 <p><strong> Selected Year: </strong> {selectedYear}</p>
-                <p><strong>Selected Session/Month: </strong>{selectedSession}</p>
-                <p><strong>Drought Area: </strong>{droughtArea} Mkm<sup>2</sup></p>
-                <p><strong>Mean Intensity: </strong>{droughtIntensity}</p>
+                <p><strong>Selected Season/Month: </strong>{selectedSession}</p>
+                <p><strong>Drought Area (All India): </strong>{droughtArea} Mkm<sup>2</sup></p>
+                <p><strong>Mean Intensity (All India): </strong>{droughtIntensity}</p>
               </div>
             </div>
           </>
@@ -264,20 +426,29 @@ const Dashboard = () => {
 
         )}
 
-        <div className='right_panel'>
+        <div className='right_panel' ref={mapContainerRef}>
 
           <MapContainer
-            center={[23, 82]}
+            fullscreenControl={true}
+            center={[23, 84]}
             style={{ width: '100%', height: "100%", backgroundColor: 'white', border: 'none', margin: 'auto' }}
             zoom={setInitialMapZoom()}
-            zoomDelta={0.25}
-            zoomSnap={0}
+
             // maxZoom={8}
-            // minZoom={4}
+            minZoom={setInitialMapZoom()}
+            keyboard={false}
+            dragging={setDragging()}
             // attributionControl={false}
-            scrollWheelZoom={false}
+            // scrollWheelZoom={false}
+            doubleClickZoom={false}
           >
             <SearchBar />
+            <ExportMapButton mapContainerRef={mapContainerRef} />
+
+
+
+
+
 
 
 
@@ -285,17 +456,46 @@ const Dashboard = () => {
               <>
                 <div className='drought_details_container_desktop'>
                   <p><strong> Selected Year: </strong> {selectedYear}</p>
-                  <p><strong>Selected Session/Month: </strong>{selectedSession}</p>
-                  <p><strong>Drought Area: </strong>{droughtArea} Mkm<sup>2</sup></p>
-                  <p><strong>Mean Intensity: </strong>{droughtIntensity}</p>
+                  <p><strong>Selected Season/Month: </strong>{selectedSession}</p>
+                  <p><strong>Drought Area (All India): </strong>{droughtArea} Mkm<sup>2</sup></p>
+                  <p><strong>Mean Intensity (All India): </strong>{droughtIntensity}</p>
                 </div>
 
+                {filteredIndiaDistrict ? (
+                  <FiltererdJsonData selectedState={selectedState}
+                  selectedDistrict={selectedDistrict}
+                  selectedTehsil={selectedTehsil}
+                  DistrictStyle={DistrictStyle}
+                  filteredIndiaDistrict={filteredIndiaDistrict}
+                  DistrictOnEachfeature={DistrictOnEachfeature}/>
+                  
 
-                <GeoJSON
-                  style={DistrictStyle}
-                  data={indiaDistrict.features}
-                  onEachFeature={DistrictOnEachfeature}
-                />
+                ) : (
+                  <GeoJSON
+                    style={DistrictStyle}
+                    data={indiaDistrict.features}
+                    onEachFeature={DistrictOnEachfeature}
+                  />
+
+                )}
+
+
+
+
+
+
+
+
+
+
+
+                <GeoJSON data={indiastates.features} style={{
+                  fillColor: 'none',
+                  weight: 2,
+                  color: 'black',
+                  interactive: false
+                }} />
+
 
                 <div className="legend-panel-desktop">
                   <Legend />
@@ -317,7 +517,7 @@ const Dashboard = () => {
 
 
           {loading && (
-            <div className='map_layer_loader_container'>
+            <div className='map_layer_loader_container_desktop'>
               <div className="map_loader_container">
                 <span className="map_loader"></span>
               </div>
@@ -327,6 +527,18 @@ const Dashboard = () => {
           )}
 
         </div>
+
+
+        {loading && (
+          <div className='map_layer_loader_container_mobile'>
+            <div className="map_loader_container">
+              <span className="map_loader"></span>
+            </div>
+
+          </div>
+
+        )}
+
 
 
 

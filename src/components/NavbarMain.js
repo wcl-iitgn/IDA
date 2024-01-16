@@ -62,6 +62,10 @@ const NavbarMain = () => {
                                     Map Viewer
                                 </Link>
 
+                                <Link className="nav__item" to="/timeseries" onClick={handleLinkClick}>
+                                   Time Series
+                                </Link>
+
                                 {/* <div className='dropdown_nav_container'>
                                     <Link className="nav__item dropdown_nav" to="#">
                                         Products  <i className="fa fa-chevron-down"></i>
@@ -75,6 +79,10 @@ const NavbarMain = () => {
                                 <Link className="nav__item" to="/about" onClick={handleLinkClick}>
                                     About
                                 </Link>
+
+                                <a className="nav__item" href="https://indiadroughtmonitor.in/" onClick={handleLinkClick} target='blank'>
+                                   India Drought Monitor&nbsp;<FaExternalLinkAlt />
+                                </a>
 
                                 <a className="nav__item" href="https://vmishra.people.iitgn.ac.in/water&climate/" onClick={handleLinkClick} target='blank'>
                                     WCL&nbsp;<FaExternalLinkAlt />

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TileLayer, GeoJSON, LayersControl, FeatureGroup, ScaleControl, useMap, useMapEvents } from 'react-leaflet'
-import { indiastates } from '../assets/data/indiaStates';
-// import { indiaDistrict } from '../assets/data/indiaDistrict';
+// import indiastates  from '../assets/data/indiaStates.json';
+import indiaRivers  from '../assets/data/indiaRivers.json';
+
 
 
 // import L from 'leaflet';
@@ -55,7 +56,7 @@ const BaseMap = () => {
 
 
   const handleZoomToCenter = () => {
-    map.setView([23, 79], 5);
+    map.setView([23, 84], 5);
 
   };
 
@@ -86,13 +87,25 @@ const BaseMap = () => {
 
         
 
-        <LayersControl.Overlay checked name="States Boundary">
+        {/* <LayersControl.Overlay checked name="States Boundary">
           <FeatureGroup>
             
             <GeoJSON data={indiastates.features} style={{
               fillColor: 'none',
               weight: 2,
               color: 'black',
+              interactive: false
+            }} />
+          </FeatureGroup>
+        </LayersControl.Overlay> */}
+
+
+        <LayersControl.Overlay name="Rivers">
+          <FeatureGroup>
+            <GeoJSON data={indiaRivers.features} style={{
+              fillColor: 'none',
+              weight: 2,
+              color: 'blue',
               interactive: false
             }} />
           </FeatureGroup>
