@@ -10,8 +10,9 @@ const ContactUsPage = () => {
         <>
             <div className="main_page_container">
                 <div className="para_content">
+                    
+                    <div className="contact_page">
                     <h1>Contact US</h1>
-                    <div className="section">
                         <div className="row">
                             <div className="col-md-3">
                                 <div className="contact-image">

@@ -39,6 +39,9 @@ p {
 .para_content p{
   font-size: 20px;
 }
+.para_content ul{
+  font-size: 20px;
+}
 .para_content h1{
   font-size: 36px;
   margin-bottom: 20px;
@@ -49,7 +52,7 @@ p {
   position: fixed;
   top: 0;
   width: 100vw;
-  z-index: 10000;
+  z-index: 10000000;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
 
 }
@@ -166,11 +169,11 @@ p {
   align-items: center;
   margin-right: 5px;
   padding: 0px 10px;
+  line-height: 55px;
+  font-size: 20px;
 }
 
-.nav__item {
-  line-height: 55px;
-}
+
 
 
 .nav__item:hover {
@@ -179,7 +182,20 @@ p {
 
   background-color: var(--theme-hover-clor);
 }
+
+.active_nav:hover{
+  transition: ease-in 0.5s;
+  /* background-color: whitesmoke; */
+
+  background-color: var(--theme-hover-clor);
+
+}
 .active_nav{
+  align-items: center;
+  margin-right: 5px;
+  padding: 0px 10px;
+  line-height: 55px;
+  font-size: 20px;
   background-color: var(--theme-hover-clor);
 }
 
@@ -302,6 +318,11 @@ border-right: 2px solid rgb(189, 189, 189);
 
 }
 
+.timeseries_heading p{
+  text-align: center;
+  margin: 10px 0px;
+  font-size: 16px;
+}
 .drought_details_container_desktop p {
   font-size: 16px;
 }
@@ -351,7 +372,7 @@ border-right: 2px solid rgb(189, 189, 189);
   padding: 10px;
   background-color: var(--theme-color);
   color: white;
-
+border-radius: 5px;
   position: relative;
   font-size: 18px;
 
@@ -621,7 +642,8 @@ border-right: 2px solid rgb(189, 189, 189);
 /* ......................... */
 
 .footer-section {
-  background: whitesmoke;
+  background: rgb(249, 249, 249);
+  box-shadow: 2px 2px 0px 2px rgba(0, 0, 0, .15);
 }
 .footer-container{
   margin: 0px 30px;
@@ -650,6 +672,11 @@ justify-content: center;
   font-size: 16px;
   text-align: center;
   color: #000000;
+}
+.footer-text a {
+  text-align: center;
+  font-size: 16px;
+
 }
 
 

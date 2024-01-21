@@ -308,7 +308,17 @@ const TimeseriesPage = () => {
 
                     {plotData && plotData.length > 0 && selectedSession && (
                         <>
-                        {/* <p>{tehsilSelectedItem[0].STATE}, {tehsilSelectedItem[0].DISTRICT}, {tehsilSelectedItem[0].TEHSIL}</p> */}
+                        {tehsilSelectedItem && tehsilSelectedItem.length>0 && (
+                             <div className='timeseries_heading'>
+                             <p><b>Region: </b>{tehsilSelectedItem[0].TEHSIL}, {tehsilSelectedItem[0].DISTRICT}, {tehsilSelectedItem[0].STATE} </p>
+                             <p><b>Season/Month: </b>{selectedSession}</p>
+                             
+     
+                             </div>
+
+                        )}
+                       
+                       
                         <Plot
                             data={[
                                 {
@@ -321,7 +331,7 @@ const TimeseriesPage = () => {
                                 },
                             ]}
                             layout={{
-                                title: `<b>Season/Month: </b>${selectedSession}, <b>Region: </b>${tehsilSelectedItem[0].TEHSIL}, ${tehsilSelectedItem[0].DISTRICT}, ${tehsilSelectedItem[0].STATE} `,
+                                // title: ,
                                 xaxis: {
                                     title: 'Year',
                                 },
@@ -329,7 +339,7 @@ const TimeseriesPage = () => {
                                     title: 'SPEI (Standardized Precipitation Evapotranspiration Index)',
                                 },
                             }}
-                            style={{ width: "100%", height: "100%" }}
+                            style={{ width: "100%", height: "calc(100% - 100px)" }}
                         />
                         </>
 
@@ -381,6 +391,11 @@ const TimeseriesPage = () => {
                                     yaxis: {
                                         title: 'Drought Area (Mkm2)',
                                     },
+                                    legend: {
+                                        orientation: 'h', // 'h' for horizontal, 'v' for vertical
+                                        x: 0.5, 
+                                        y: 1.1,
+                                      },
                                 }}
                                 style={{ width: "100%", height: "100%" }}
                             />
@@ -428,6 +443,11 @@ const TimeseriesPage = () => {
                                     yaxis: {
                                         title: 'Mean Drought Intensity',
                                     },
+                                    legend: {
+                                        orientation: 'h', // 'h' for horizontal, 'v' for vertical
+                                        x: 0.5, 
+                                        y: 1.1,
+                                      },
                                 }}
                                 style={{ width: "100%", height: "100%" }}
                             />

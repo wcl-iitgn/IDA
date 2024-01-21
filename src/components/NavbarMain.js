@@ -52,20 +52,20 @@ const NavbarMain = () => {
                             </div> */}
 
                             <div className='nav__list'>
-                                <NavLink className="nav__item" 
-                                activeClassName="active_nav"
+                                <NavLink 
+                                className={({ isActive }) => (isActive ? 'active_nav' : 'nav__item')}
+        
                                  to="/" onClick={handleLinkClick}>
                                     Home
                                 </NavLink>
 
-                                <NavLink className="nav__item"
-                                 activeClassName="active_nav"
+                                <NavLink 
+                                 className={({ isActive }) => (isActive ? 'active_nav' : 'nav__item')}
                                   to="/map-viewer" onClick={handleLinkClick}>
                                     Map Viewer
                                 </NavLink>
 
-                                <NavLink className="nav__item"
-                                 activeClassName="active_nav"
+                                <NavLink className={({ isActive }) => (isActive ? 'active_nav' : 'nav__item')}
                                   to="/timeseries" onClick={handleLinkClick}>
                                    Time Series
                                 </NavLink>
@@ -81,24 +81,22 @@ const NavbarMain = () => {
                                 </div> */}
 
                                 <NavLink 
-                                className="nav__item"
-                                activeClassName="active_nav"
+                                className={({ isActive }) => (isActive ? 'active_nav' : 'nav__item')}
                                  to="/about" onClick={handleLinkClick}>
                                     About
                                 </NavLink>
-                                <NavLink className="nav__item"
-                                 activeClassName="active_nav"
+                                <NavLink className={({ isActive }) => (isActive ? 'active_nav' : 'nav__item')}
                                   to="/contact" onClick={handleLinkClick}>
                                     Contact Us
                                 </NavLink>
 
                                 <a className="nav__item"
-                                  href="https://indiadroughtmonitor.in/" onClick={handleLinkClick} target='blank'>
+                                  href="https://indiadroughtmonitor.in/" onClick={handleLinkClick} target='_blank' rel="noreferrer noopener">
                                    India Drought Monitor&nbsp;<FaExternalLinkAlt />
                                 </a>
 
                                 <a className="nav__item"
-                                  href="https://vmishra.people.iitgn.ac.in/water&climate/" onClick={handleLinkClick} target='blank'>
+                                  href="https://vmishra.people.iitgn.ac.in/water&climate/" onClick={handleLinkClick} target='_blank' rel="noreferrer noopener">
                                     WCL&nbsp;<FaExternalLinkAlt />
                                 </a>
                             </div>

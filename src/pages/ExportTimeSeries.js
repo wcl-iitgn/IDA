@@ -17,7 +17,7 @@ const ExportTimeSeries = ({ mapContainerRef }) => {
         logo.src = Logo;
 
 
-        setAlertMessage('Map is downloading..')
+        setAlertMessage('Plot is downloading..')
         setShowAlert(true)
 
 
@@ -71,13 +71,13 @@ const ExportTimeSeries = ({ mapContainerRef }) => {
 
 
                         if (viewportWidth <= 767) {
-                            const pdfHeight = pdf.internal.pageSize.getHeight() - 80; // Set the desired height for PDF if viewport width <= 767
+                            const pdfHeight = pdf.internal.pageSize.getHeight() - 100; // Set the desired height for PDF if viewport width <= 767
                             const pdfWidth = pdfHeight * aspectRatio;
                             const x = (pdf.internal.pageSize.getWidth() - pdfWidth) / 2;
-                            const y = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
+                            const y = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2+20;
                             pdf.addImage(img, 'PNG', x, y, pdfWidth, pdfHeight);
                         } else {
-                            const pdfWidth = pdf.internal.pageSize.getWidth(); // Use A4 width for PDF if viewport width > 767
+                            const pdfWidth = pdf.internal.pageSize.getWidth()-15; // Use A4 width for PDF if viewport width > 767
                             const pdfHeight = pdfWidth / aspectRatio;
                             const x = 0;
                             const y = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
@@ -86,7 +86,7 @@ const ExportTimeSeries = ({ mapContainerRef }) => {
 
                         // Add text line at the bottom
                         const websiteName = 'This plot has been downloaded from DROUGHT ATLAS OF INDIA (www.indiadroughtatlas.in)';
-                        const fontSize = 10;
+                        const fontSize = 8;
                         const textWidth = pdf.getStringUnitWidth(websiteName) * fontSize / pdf.internal.scaleFactor;
                         const textX = (pdf.internal.pageSize.getWidth() - textWidth) / 2; // X-coordinate for center alignment
                         const textY = pdf.internal.pageSize.getHeight() - 10; // Y-coordinate for the text
@@ -101,7 +101,7 @@ const ExportTimeSeries = ({ mapContainerRef }) => {
 
                         pdf.save('timeseries.pdf', pdfOptions);
 
-                        setAlertMessage('Map exported as PDF successfully!')
+                        setAlertMessage('Plot has been exported as PDF successfully!')
                         setShowAlert(true)
                     };
                     img.src = reader.result;
@@ -109,7 +109,8 @@ const ExportTimeSeries = ({ mapContainerRef }) => {
                 reader.readAsDataURL(blob);
             })
             .catch((error) => {
-                console.error('Error exporting map image:', error);
+                setAlertMessage('Error exporting plot image:', error)
+                setShowAlert(true)
             });
     };
 

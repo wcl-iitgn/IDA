@@ -153,7 +153,7 @@ const Dashboard = () => {
           // Fetching intensity data from the API
           const intensityResponse = await fetch(`https://india-drought-monitor.github.io/india-drought-atlas-data/Intensity.json`);
           const droughtIntensity = await intensityResponse.json();
-      
+
 
           const filteredDroughtArea = droughtArea.filter(data => data.Year === parseInt(selectedYear) && data[formattedSession]);
           const filteredDroughtIntensity = droughtIntensity.filter(data => data.Year === parseInt(selectedYear) && data[formattedSession]);
@@ -451,7 +451,7 @@ const Dashboard = () => {
             doubleClickZoom={false}
           >
             <SearchBar />
-            <ExportMapButton mapContainerRef={mapContainerRef} />
+            <ExportMapButton mapContainerRef={mapContainerRef} selectedYear={selectedYear} selectedSession={selectedSession}  />
 
 
 

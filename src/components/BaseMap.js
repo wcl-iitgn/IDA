@@ -13,14 +13,14 @@ import { FaHome } from "react-icons/fa";
 const layers = [
   {
     name: "Google Map",
-    url: 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
+    url: 'https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   },
-  {
-    name: "Open Street Map",
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    subdomains: ['a', 'b', 'c']
-  },
+  // {
+  //   name: "Open Street Map",
+  //   url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  //   subdomains: ['a', 'b', 'c']
+  // },
   {
     name: "Topographic Map",
     url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
@@ -28,7 +28,7 @@ const layers = [
   },
   {
     name: "Satellite Map",
-    url: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+    url: 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   }
 

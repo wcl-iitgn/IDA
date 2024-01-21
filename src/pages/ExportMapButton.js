@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { AiFillPrinter } from 'react-icons/ai';
 import { useAlertContext } from '../context/AlertContext';
 import Logo from "../assets/images/export-logo.jpg"
+import MobileLegend from "../assets/images/mobile-map-legend.jpg"
 
-const ExportMapButton = ({ mapContainerRef }) => {
+const ExportMapButton = ({ mapContainerRef , selectedYear ,selectedSession}) => {
+
     const { setAlertMessage, setShowAlert } = useAlertContext();
+
     const handleExportMapPDF = () => {
         const mapContainer = mapContainerRef.current;
         const viewportWidth = window.innerWidth;
 
+
         const logo = new Image();
         logo.src = Logo;
-
 
         setAlertMessage('Map is downloading..')
         setShowAlert(true)
@@ -62,11 +65,35 @@ const ExportMapButton = ({ mapContainerRef }) => {
 
 
                         if (viewportWidth <= 767) {
+                            // Mobile legend size Width 400, height 100
+
+
+
                             const pdfHeight = pdf.internal.pageSize.getHeight() - 80; // Set the desired height for PDF if viewport width <= 767
                             const pdfWidth = pdfHeight * aspectRatio;
                             const x = (pdf.internal.pageSize.getWidth() - pdfWidth) / 2;
                             const y = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
                             pdf.addImage(img, 'PNG', x, y, pdfWidth, pdfHeight);
+
+
+                            const LegendWidth = 133.33; // Adjust the width of the logo as needed
+                            const LegendHeight = 33.33;
+                            // const logoX = (pdf.internal.pageSize.getWidth() - logoWidth) / 2;
+                            const LegendX = pdf.internal.pageSize.getWidth() - pdfWidth + LegendWidth;
+                            const LegendY = pdf.internal.pageSize.getHeight() - LegendHeight - 80; // Adjust the Y-coordinate for the logo placement
+                            pdf.addImage(MobileLegend, 'PNG', LegendX, LegendY, LegendWidth, LegendHeight);
+
+
+                            const websiteName = `Drought Condition of ${selectedSession} for year ${selectedYear}`;
+                            const fontSize = 12;
+                            const textWidth = pdf.getStringUnitWidth(websiteName) * fontSize / pdf.internal.scaleFactor;
+                            const textX = (pdf.internal.pageSize.getWidth() - textWidth) / 2; // X-coordinate for center alignment
+                            const textY = pdf.internal.pageSize.getHeight() - 25;
+
+                            pdf.setFontSize(fontSize);
+                            pdf.text(textX, textY, websiteName);
+
+
                         } else {
                             const pdfWidth = pdf.internal.pageSize.getWidth(); // Use A4 width for PDF if viewport width > 767
                             const pdfHeight = pdfWidth / aspectRatio;
@@ -77,7 +104,7 @@ const ExportMapButton = ({ mapContainerRef }) => {
 
                         // Add text line at the bottom
                         const websiteName = 'This map has been downloaded from DROUGHT ATLAS OF INDIA (www.indiadroughtatlas.in)';
-                        const fontSize = 10;
+                        const fontSize = 8;
                         const textWidth = pdf.getStringUnitWidth(websiteName) * fontSize / pdf.internal.scaleFactor;
                         const textX = (pdf.internal.pageSize.getWidth() - textWidth) / 2; // X-coordinate for center alignment
                         const textY = pdf.internal.pageSize.getHeight() - 10; // Y-coordinate for the text
@@ -92,15 +119,18 @@ const ExportMapButton = ({ mapContainerRef }) => {
 
                         pdf.save('map.pdf', pdfOptions);
 
-                        setAlertMessage('Map exported as PDF successfully!')
+                        setAlertMessage('Map has been exported as PDF successfully!')
                         setShowAlert(true)
+
                     };
                     img.src = reader.result;
                 };
                 reader.readAsDataURL(blob);
             })
             .catch((error) => {
-                console.error('Error exporting map image:', error);
+                setAlertMessage('Error exporting map image:', error)
+                setShowAlert(true)
+
             });
     };
 
@@ -108,6 +138,8 @@ const ExportMapButton = ({ mapContainerRef }) => {
         <button onClick={handleExportMapPDF} className="print_map_btn">
             <AiFillPrinter />
         </button>
+
+
     )
 }
 
